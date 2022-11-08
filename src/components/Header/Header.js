@@ -6,6 +6,8 @@ function Header() {
   return (
     <>
         <header className="header">
+            <button className="header__hamburger"></button>
+            <button className="header__settings"></button>
         </header>
         <Hamburger />
         <Settings />

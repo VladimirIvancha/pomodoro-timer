@@ -1,0 +1,85 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0;
+    background: #FFFFFF;
+    flex-grow: 1;
+}
+
+.main__title {
+    margin: 0;
+}
+
+.main__pomodoro-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../../images/pomodoro.svg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: #FFFFFF;
+    border-style: none;
+    width: 80%;
+    height: 400px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.main__timer {
+    font-weight: 500;
+    font-size: 80px;
+    line-height: 120px;
+    color: #FFFFFF;
+    margin: 0;
+    margin-top: 60px;
+}
+
+.main__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    max-width: 1280px;
+    min-height: 80px;
+    width: 100%;
+    margin: 0;
+    background: #FFFFFF;
+}
+
+.main__buttons-button {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: #FFFFFF;
+    border-style: none;
+    width: 80px;
+    height: 80px;
+    margin: 10px 20px;
+    cursor: pointer;
+}
+
+.main__buttons-button_play {
+    background-image: url(../../images/play-play-button-svgrepo-com.svg);
+}
+
+.main__buttons-button_pause {
+    background-image: url(../../images/pause-svgrepo-com.svg);
+}
+
+.main__buttons-button_forward {
+    background-image: url(../../images/forward-svgrepo-com.svg);
+    display: none;
+}
+
+.main__buttons-button_stop {
+    background-image: url(../../images/stop-svgrepo-com.svg);
+    display: none;
+}
+
+.main__buttons-button_active {
+    display: block;
+}
