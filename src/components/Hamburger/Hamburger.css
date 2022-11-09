@@ -1,0 +1,88 @@
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    align-items: flex-start;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    transition: visibility 0s linear 0.3s, opacity 0.3s linear;
+}
+
+.hamburger_is-opened {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+    z-index: 1;
+}
+
+.hamburger__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F8F8F8;
+    max-width: 70%;
+    width: 100%;
+    height: inherit;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.hamburger__close-btn {
+    background-image: url(../../images/nav_close-btn.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    background-size: cover;
+    align-self: end;
+    border: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-right: 24px;
+}
+
+.hamburger__link {
+    display: flex;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 28px;
+    color: #000000;
+    text-decoration: none;
+    margin: 0;
+    margin-top: 60px;
+    cursor: pointer;
+    text-align: center;
+}
+    
+.hamburger__link:hover {
+    opacity: 0.7;
+}
+
+.hamburger__link_red {
+    font-family: "Magnolia-Script";
+    font-size: 40px;
+    color: red;
+}
+
+@media screen and (max-width: 400px) {
+    .hamburger__link {
+        font-size: 20px;
+    }
+
+    .hamburger__link_red {
+        font-size: 28px;
+    }
+
+    .hamburger__close-btn {
+        margin-right: 5px;
+    }
+}

@@ -11,7 +11,13 @@
 }
 
 .main__title {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    color: #000000;
     margin: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .main__pomodoro-image {
@@ -26,8 +32,6 @@
     border-style: none;
     width: 80%;
     height: 400px;
-    margin-top: 40px;
-    margin-bottom: 40px;
 }
 
 .main__timer {
@@ -49,6 +53,7 @@
     min-height: 80px;
     width: 100%;
     margin: 0;
+    margin-top: 30px;
     background: #FFFFFF;
 }
 
@@ -89,4 +94,15 @@
 
 .main__buttons-button_active {
     display: block;
+}
+
+@media screen and (max-width: 400px) {
+    .main__title {
+        font-size: 28px;
+    }
+
+    .main__timer {
+        font-size: 60px;
+        line-height: 80px;
+    }
 }

@@ -1,17 +1,16 @@
 import React from "react";
-import Hamburger from "../Hamburger/Hamburger"
-import Settings from "../Settings/Settings"
 
-function Header() {
-  return (
-    <>
-        <header className="header">
-            <button className="header__hamburger"></button>
-            <button className="header__settings"></button>
-        </header>
-        <Hamburger />
-        <Settings />
-    </>
-  );
+function Header({
+    handleHamburgerOpen,
+    handleSettingsOpen,
+}) {
+    return (
+        <>
+            <header className="header">
+                <button className="header__hamburger" type="button" onClick={handleHamburgerOpen}></button>
+                <button className="header__settings" type="button" onClick={handleSettingsOpen}></button>
+            </header>
+        </>
+    );
 }
 export default Header;

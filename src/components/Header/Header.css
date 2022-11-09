@@ -33,3 +33,13 @@
     margin-right: 70px;
     cursor: pointer;
 }
+
+@media screen and (max-width: 400px) {
+    .header__hamburger {
+        margin-left: 20px;
+    }
+
+    .header__settings {
+        margin-right: 20px;
+    }
+}

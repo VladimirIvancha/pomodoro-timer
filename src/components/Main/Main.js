@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
+import Hamburger from "../Hamburger/Hamburger"
+import Settings from "../Settings/Settings"
 
-function Main() {
+function Main({
+    handleHamburgerClose,
+    handleSetingsClose,
+    isHamburgerOpen,
+    isSettingsOpen,
+}) {
     const DEFAULT_WORK_INTERVAL = 25*60;
     const DEFAULT_RELAX_INTERVAL = 5*60;
     
@@ -89,19 +96,55 @@ function Main() {
         !relaxTimerMode ? setStartTime(DEFAULT_RELAX_INTERVAL) : setStartTime(DEFAULT_WORK_INTERVAL);
         !relaxTimerMode ? setTitleText('Let`s Relax a Littlebit!') : setTitleText('Let`s Start Working!');
     }
+
+    function switchToWorkTimer() {
+        stopCountdown();
+        setTimerActive(false);
+        setTimerStarted(false);
+        setStopTimer(null);
+        setRelaxTimerMode(false);
+        setStartTime(DEFAULT_WORK_INTERVAL);
+        setTimerCountdown(preDefaultMinutes(DEFAULT_WORK_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_WORK_INTERVAL));
+        setTitleText('Let`s Start Working!');
+        handleHamburgerClose();
+    }
+  
+    function switchToRelaxTimer() {
+        stopCountdown();
+        setTimerActive(false);
+        setTimerStarted(false);
+        setStopTimer(null);
+        setRelaxTimerMode(true);
+        setStartTime(DEFAULT_RELAX_INTERVAL);
+        setTimerCountdown(preDefaultMinutes(DEFAULT_RELAX_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_RELAX_INTERVAL));
+        setTitleText('Let`s Relax a Littlebit!');
+        handleHamburgerClose();
+    }
     
     return (
-        <main className="main">
-            <h1 className="main__title">{titleText}</h1>
-            <div className="main__pomodoro-image">
-                <p className="main__timer">{timerCountdown}</p>
-            </div>
-            <div className="main__buttons">
-                <button className={classNameForward} type="button" onClick={handleNextTimer}></button>
-                <button className={classNameStartPause} type="button" onClick={handleStartTimer}></button>
-                <button className={classNameStopReset} type="button" onClick={handleResetTimer}></button>
-            </div>
-        </main>
+        <>
+            <main className="main">
+                <h1 className="main__title">{titleText}</h1>
+                <div className="main__pomodoro-image">
+                    <p className="main__timer">{timerCountdown}</p>
+                </div>
+                <div className="main__buttons">
+                    <button className={classNameForward} type="button" onClick={handleNextTimer}></button>
+                    <button className={classNameStartPause} type="button" onClick={handleStartTimer}></button>
+                    <button className={classNameStopReset} type="button" onClick={handleResetTimer}></button>
+                </div>
+            </main>
+            <Hamburger 
+            isOpen={isHamburgerOpen}
+            onClose={handleHamburgerClose}
+            switchToWorkTimer={switchToWorkTimer}
+            switchToRelaxTimer={switchToRelaxTimer}
+            />
+            <Settings 
+            isOpen={isSettingsOpen}
+            onClose={handleSetingsClose}
+            />
+        </>
     );
 }
 export default Main;

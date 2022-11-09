@@ -1,6 +1,9 @@
 @import url(./vendor/normalize.css);
 @import url(./vendor/fonts/Inter_Web/inter.css);
+@import url(./vendor/fonts/Magnolia-Script/magnolia.css);
 @import url(./components/App/App.css);
 @import url(./components/Header/Header.css);
 @import url(./components/Main/Main.css);
 @import url(./components/Footer/Footer.css);
+@import url(./components/Hamburger/Hamburger.css);
+@import url(./components/Settings/Settings.css);
