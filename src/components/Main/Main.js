@@ -1,21 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function Main() {
     const DEFAULT_WORK_INTERVAL = 25*60;
-    const minutes = Math.floor(DEFAULT_WORK_INTERVAL / 60);
-    const seconds = Math.floor(DEFAULT_WORK_INTERVAL / 60 / 60) % 60;
-    const defaultMinutes = minutes < 10 ? '0'+minutes : minutes;
-    const defaultSeconds = seconds < 10 ? '0'+seconds : seconds;
+    const DEFAULT_RELAX_INTERVAL = 5*60;
     
     const [isTimerActive, setTimerActive] = useState(false);
     const [isTimerStarted, setTimerStarted] = useState(false);
-    const [timerCountdown, setTimerCountdown] = useState(defaultMinutes+' : '+defaultSeconds);
     const [startTime, setStartTime] = useState(DEFAULT_WORK_INTERVAL);
+    const [defaultStartTime, setDefaultStartTime] = useState(DEFAULT_WORK_INTERVAL)
     const [stopTimer, setStopTimer] = useState(null);
+    const [titleText, setTitleText] = useState('Let`s Start Working!')
+    const [relaxTimerMode, setRelaxTimerMode] = useState(false);
 
+    const minutes = Math.floor(defaultStartTime / 60);
+    const seconds = defaultStartTime % 60;
+    const defaultMinutes = minutes < 10 ? minutes < 1 ? '00' : '0'+minutes : minutes;
+    const defaultSeconds = seconds < 10 ? '0'+seconds : seconds;
+    const [timerCountdown, setTimerCountdown] = useState(defaultMinutes+' : '+defaultSeconds);
+    
     const classNameStartPause = `main__buttons-button main__buttons-button_play ${isTimerActive && 'main__buttons-button_pause'}`;
     const classNameForward = `main__buttons-button main__buttons-button_forward ${isTimerStarted && 'main__buttons-button_active'}`;
     const classNameStopReset = `main__buttons-button main__buttons-button_stop ${isTimerStarted && 'main__buttons-button_active'}`;
+
+    function preDefaultMinutes(data) {
+        const minutes = Math.floor(data / 60);
+        return minutes < 10 ? minutes < 1 ? '00' : '0'+minutes : minutes;
+    }
+
+    function preDefaultSeconds(data) {
+        const seconds = data % 60;
+        return seconds < 10 ? '0'+seconds : seconds;
+    }
+
+    useEffect(() => {
+        relaxTimerMode ? setDefaultStartTime(DEFAULT_RELAX_INTERVAL) : setDefaultStartTime(DEFAULT_WORK_INTERVAL);
+      }, [relaxTimerMode, DEFAULT_RELAX_INTERVAL, DEFAULT_WORK_INTERVAL]);
 
     function startTimer(startTime) {
         if (stopTimer) {
@@ -33,6 +52,8 @@ function Main() {
         setStartTime(startTime);
         if (startTime >= 0) { 
             setStopTimer(setTimeout(() => startTimer(startTime), 1000))
+        } else {
+            handleNextTimer();
         }
     }
 
@@ -45,25 +66,38 @@ function Main() {
         !isTimerActive ? setTimerActive(true) : setTimerActive(false);
         setTimerStarted(true);
         !isTimerActive ? startTimer(startTime) : stopCountdown();
+        !isTimerActive ? !relaxTimerMode ? setTitleText('Working Hard...') : setTitleText('Relaxing...') : setTitleText('Pausing...');
     }
 
     function handleResetTimer() {
         stopCountdown();
         setTimerActive(false);
         setTimerStarted(false);
-        setStartTime(DEFAULT_WORK_INTERVAL);
         setStopTimer(null);
         setTimerCountdown(defaultMinutes+' : '+defaultSeconds);
+        relaxTimerMode ? setStartTime(DEFAULT_RELAX_INTERVAL) : setStartTime(DEFAULT_WORK_INTERVAL);
+        relaxTimerMode ? setTitleText('Let`s Relax a Littlebit!')  : setTitleText('Let`s Start Working!');
+    }
+
+    function handleNextTimer() {
+        stopCountdown();
+        setTimerActive(false);
+        setTimerStarted(false);
+        setStopTimer(null);
+        !relaxTimerMode ? setTimerCountdown(preDefaultMinutes(DEFAULT_RELAX_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_RELAX_INTERVAL)) : setTimerCountdown(preDefaultMinutes(DEFAULT_WORK_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_WORK_INTERVAL));
+        !relaxTimerMode ? setRelaxTimerMode(true) : setRelaxTimerMode(false);
+        !relaxTimerMode ? setStartTime(DEFAULT_RELAX_INTERVAL) : setStartTime(DEFAULT_WORK_INTERVAL);
+        !relaxTimerMode ? setTitleText('Let`s Relax a Littlebit!') : setTitleText('Let`s Start Working!');
     }
     
     return (
         <main className="main">
-            <h1 className="main__title">Let`s Start Working!</h1>
+            <h1 className="main__title">{titleText}</h1>
             <div className="main__pomodoro-image">
                 <p className="main__timer">{timerCountdown}</p>
             </div>
             <div className="main__buttons">
-                <button className={classNameForward}></button>
+                <button className={classNameForward} type="button" onClick={handleNextTimer}></button>
                 <button className={classNameStartPause} type="button" onClick={handleStartTimer}></button>
                 <button className={classNameStopReset} type="button" onClick={handleResetTimer}></button>
             </div>
