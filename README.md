@@ -1,6 +1,8 @@
 # Pet-проект: Pomodoro Timer (frontend).
 ____
 
+<img src="./Pomodoro-timer/src/images/app-printscreen.png" alt="скриншот приложения" style="width: 320px;"></img>
+
 ### Описание идеи:
 Одностраничное приложение таймера обратного отсчета по системе Pomodoro Technique.
 ### Функционал:
