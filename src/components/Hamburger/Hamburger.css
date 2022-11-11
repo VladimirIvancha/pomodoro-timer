@@ -51,6 +51,7 @@
 }
 
 .hamburger__link {
+    font-family: "Magnolia-Script";
     display: flex;
     font-style: normal;
     font-weight: 500;
@@ -67,10 +68,21 @@
     opacity: 0.7;
 }
 
+.hamburger__link_small {
+    font-size: 18px;
+}
+
 .hamburger__link_red {
-    font-family: "Magnolia-Script";
     font-size: 40px;
     color: red;
+}
+
+.hamburger__link_notlink {
+    cursor: default;
+}
+
+.hamburger__link_notlink:hover {
+    opacity: 1;
 }
 
 @media screen and (max-width: 400px) {

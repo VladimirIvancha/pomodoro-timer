@@ -7,6 +7,9 @@ function Main({
     handleSetingsClose,
     isHamburgerOpen,
     isSettingsOpen,
+    minSettings,
+    setMinSettings,
+    handleSubmitSettings,
 }) {
     const DEFAULT_WORK_INTERVAL = 25*60;
     const DEFAULT_RELAX_INTERVAL = 5*60;
@@ -141,8 +144,11 @@ function Main({
             switchToRelaxTimer={switchToRelaxTimer}
             />
             <Settings 
-            isOpen={isSettingsOpen}
-            onClose={handleSetingsClose}
+            isSettingsOpen={isSettingsOpen}
+            handleSetingsClose={handleSetingsClose}
+            minSettings={minSettings}
+            setMinSettings={setMinSettings}
+            handleSubmitSettings={handleSubmitSettings}
             />
         </>
     );

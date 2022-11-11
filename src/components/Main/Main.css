@@ -11,13 +11,14 @@
 }
 
 .main__title {
+    font-family: "Magnolia-Script";
     font-style: normal;
     font-weight: 400;
     font-size: 36px;
     color: #000000;
     margin: 0;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .main__pomodoro-image {
