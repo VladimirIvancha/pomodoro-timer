@@ -8,6 +8,7 @@ function App() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [minSettings, setMinSettings] = useState("");
+  const [headerTitleText, setHeaderTitleText] = useState('Pomodoro Timer')
 
   function handleHamburgerOpen() {
     !isHamburgerOpen ? setIsHamburgerOpen(true) : setIsHamburgerOpen(false);
@@ -36,6 +37,7 @@ function App() {
       <Header 
         handleHamburgerOpen={handleHamburgerOpen}
         handleSettingsOpen={handleSettingsOpen}
+        headerTitleText={headerTitleText}
       />
       <Main 
         handleHamburgerClose={handleHamburgerClose}

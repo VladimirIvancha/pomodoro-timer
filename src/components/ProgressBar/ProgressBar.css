@@ -1,0 +1,37 @@
+.progressbar__time-lines {
+    display: grid;
+    list-style: none;
+    grid-template-columns: 25fr 5fr 25fr 5fr 25fr 5fr 25fr 5fr 25fr;
+    margin: 30px 70px 0px 70px;
+    gap: 0;
+    padding: 0;
+    max-width: 1140px;
+    height: 20px;
+    width: calc(100% - 140px);
+}
+
+.progressbar__work-time-line {
+    background: #f18f94;
+    display: none;
+}
+
+.progressbar__work-time-line_active {
+    display: block;
+}
+
+.progressbar__work-progress {
+
+}
+
+.progressbar__relax-time-line {
+    background: #93f6c1;
+    display: none;
+}
+
+.progressbar__relax-progress {
+    display: block;
+}
+
+.progressbar__relax-progress {
+    
+}

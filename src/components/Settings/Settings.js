@@ -21,7 +21,7 @@ function Settings({
 
     return (
         <section className={classNameHamburger}>
-            <article className="settings__wrapper">
+            <div className="settings__wrapper">
                 <button className="settings__close-btn" type="button" onClick={handleSetingsClose}></button>
                 <h2 className="settings__link settings__link_red">Settings</h2>
                 <form 
@@ -46,7 +46,7 @@ function Settings({
                         Set
                     </button>
                 </form>
-            </article>
+            </div>
         </section>
     );
 }

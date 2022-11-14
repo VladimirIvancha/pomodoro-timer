@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Hamburger from "../Hamburger/Hamburger"
-import Settings from "../Settings/Settings"
+import Hamburger from "../Hamburger/Hamburger";
+import Settings from "../Settings/Settings";
+import ProgressBar from "../ProgressBar/ProgressBar";
 
 function Main({
     handleHamburgerClose,
@@ -136,6 +137,7 @@ function Main({
                     <button className={classNameStartPause} type="button" onClick={handleStartTimer}></button>
                     <button className={classNameStopReset} type="button" onClick={handleResetTimer}></button>
                 </div>
+                <ProgressBar />
             </main>
             <Hamburger 
             isOpen={isHamburgerOpen}
