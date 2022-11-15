@@ -11,8 +11,10 @@
 }
 
 .progressbar__work-time-line {
-    background: #f18f94;
+    width: 100%;
+    background-color: #ddd;
     display: none;
+    position: relative;
 }
 
 .progressbar__work-time-line_active {
@@ -20,7 +22,21 @@
 }
 
 .progressbar__work-progress {
+    width: 0%;
+    height: 20px;
+    background-color: #4CAF50;
+}
 
+.progressbar__text {
+    line-height: 20px;
+    color: white;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    margin: 0;
+    overflow: hidden;
 }
 
 .progressbar__relax-time-line {
@@ -28,10 +44,10 @@
     display: none;
 }
 
-.progressbar__relax-progress {
+.progressbar__relax-time-line_active {
     display: block;
 }
 
 .progressbar__relax-progress {
-    
+
 }
