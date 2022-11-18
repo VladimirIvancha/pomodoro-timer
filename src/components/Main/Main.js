@@ -15,6 +15,7 @@ function Main({
     // Константы
     const DEFAULT_WORK_INTERVAL = 25*60;
     const DEFAULT_RELAX_INTERVAL = 5*60;
+    const bar = ["#interval-1", "#interval-2", "#interval-3", "#interval-4", "#interval-5", "#interval-6", "#interval-7", "#interval-8", "#interval-9"];
     
     // Изначальные стейты
     const [isTimerActive, setTimerActive] = useState(false);
@@ -26,11 +27,8 @@ function Main({
     const [relaxTimerMode, setRelaxTimerMode] = useState(false);
     const [timerStage, setTimerStage] = useState(0);
     const [workProgress, setWorkProgress] = useState('');
-    const [relaxProgress, setRelaxProgress] = useState('');
-    const [stopProgress, setStopProgress] = useState(null);
-    const [barWidth, setBarWidth] = useState(0)
-    const [intervalId, setIntervalId] = useState('#first-interval');
-    
+    const [intervalId, setIntervalId] = useState(bar[0]);
+    const [eject, setEject] = useState(false);
     
     // Расчет вводных данных для таймеров
     const minutes = Math.floor(defaultStartTime / 60);
@@ -40,7 +38,7 @@ function Main({
     const [timerCountdown, setTimerCountdown] = useState(defaultMinutes+' : '+defaultSeconds);
     
     // Классы
-    const classNameStartPause = `main__buttons-button main__buttons-button_play ${isTimerActive && 'main__buttons-button_pause'}`;
+    const classNameStartPauseEject = `main__buttons-button main__buttons-button_play ${isTimerActive && 'main__buttons-button_pause'} ${eject && 'main__buttons-button_eject'}`;
     const classNameForward = `main__buttons-button main__buttons-button_forward ${isTimerStarted && 'main__buttons-button_active'}`;
     const classNameStopReset = `main__buttons-button main__buttons-button_stop ${isTimerStarted && 'main__buttons-button_active'}`;
 
@@ -67,18 +65,17 @@ function Main({
         setStopTimer(null);
     }
 
-    // // Функция остановки прогресс-бара
-    // function stopProgressBar() {
-    //     clearInterval(stopProgress);
-    //     setStopProgress(null);
-    // }
+    // Функция очистки цветной шкалы прогресс-бара
+    function clearProgressWidth() {
+        let elem = document.querySelector(intervalId);
+        elem.style.width = '0%';
+    }
 
     // Функция запуска таймера
     function startTimer(startTime) {
-        if (stopTimer) {
+        if (stopTimer || timerStage > 9) {
             return;
         }
-        setTimerStage(1);
         let time = startTime;
         let min = parseInt(time / 60);
         if ( min < 1 ) min = 0;
@@ -87,49 +84,30 @@ function Main({
         let seconds = time;
         if ( seconds < 10 ) seconds = '0'+seconds;
         setTimerCountdown(min+' : '+seconds);
-
         let progressWidth = Math.round(100 * (1 - startTime/defaultStartTime));
-        // const interval = (defaultStartTime/100)*1000;
         let elem = document.querySelector(intervalId);
-        setBarWidth(progressWidth);
         elem.style.width = progressWidth + '%'; 
         setWorkProgress(progressWidth * 1  + '%');
-
         startTime--;
         setStartTime(startTime);
-        
         if (startTime >= 0) { 
             setStopTimer(setTimeout(() => startTimer(startTime), 1000))
         } else if (startTime < 0 && timerStage <= 9) {
             handleNextTimer();
         } else {
             stopCountdown();
-            setTitleText('Working Hard...');
         }
     }
 
-    // // Функция запуска прогресс-бара
-    // function workProgressBar(barWidth) {
-    //     if (stopProgress) {
-    //         return;
-    //     }
-    //     const interval = (defaultStartTime/100)*1000;
-    //     let elem = document.querySelector(intervalId);
-    //     barWidth++;
-    //     setBarWidth(barWidth);
-    //     elem.style.width = barWidth + '%'; 
-    //     setWorkProgress(barWidth * 1  + '%');
-    //     if (barWidth < 100) { 
-    //         setStopProgress(setInterval(() => workProgressBar(barWidth), interval));
-    //     } else {
-    //         stopProgressBar();
-    //     }
-    // }
-
     // Кнопка запуска и паузы
     function handleStartTimer() {
+        if (timerStage > 9) {
+            switchToWorkTimer();
+            return;
+        }
         !isTimerActive ? setTimerActive(true) : setTimerActive(false);
         setTimerStarted(true);
+        timerStage <= 1 && setTimerStage(1);
         !isTimerActive ? startTimer(startTime) : stopCountdown();
         !isTimerActive ? !relaxTimerMode ? setTitleText('Working Hard...') : setTitleText('Relaxing...') : setTitleText('Pausing...');
     }
@@ -137,10 +115,10 @@ function Main({
     //Кнопка стоп (полный сброс)
     function handleResetTimer() {
         stopCountdown();
-        setBarWidth(0);
         setTimerActive(false);
         setTimerStarted(false);
-        setTimerStage(0);
+        setWorkProgress('');
+        !relaxTimerMode && timerStage === 1 && setTimerStage(0);
         setTimerCountdown(defaultMinutes+' : '+defaultSeconds);
         relaxTimerMode ? setStartTime(DEFAULT_RELAX_INTERVAL) : setStartTime(DEFAULT_WORK_INTERVAL);
         relaxTimerMode ? setTitleText('Let`s Relax a Littlebit!')  : setTitleText('Let`s Start Working!');
@@ -148,10 +126,23 @@ function Main({
 
     // Кнопка следующий этап таймера
     function handleNextTimer() {
+        if (timerStage >= 9) {
+            setTitleText('Good job, Man! Wanna do it again?');
+            setEject(true);
+            stopCountdown();
+            setTimerActive(false);
+            setTimerStarted(false);
+            setWorkProgress('');
+            setTimerStage(timerStage + 1);
+            setTimerCountdown(preDefaultMinutes(DEFAULT_WORK_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_WORK_INTERVAL));
+            setStartTime(DEFAULT_WORK_INTERVAL);
+            return;
+        }
         stopCountdown();
-        // stopProgressBar();
+        setIntervalId(bar[timerStage]);
         setTimerActive(false);
         setTimerStarted(false);
+        setWorkProgress('');
         setTimerStage(timerStage + 1);
         !relaxTimerMode ? setTimerCountdown(preDefaultMinutes(DEFAULT_RELAX_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_RELAX_INTERVAL)) : setTimerCountdown(preDefaultMinutes(DEFAULT_WORK_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_WORK_INTERVAL));
         !relaxTimerMode ? setRelaxTimerMode(true) : setRelaxTimerMode(false);
@@ -164,11 +155,13 @@ function Main({
         stopCountdown();
         setTimerActive(false);
         setTimerStarted(false);
+        setTimerStage(0);
         setStopTimer(null);
         setRelaxTimerMode(false);
         setStartTime(DEFAULT_WORK_INTERVAL);
         setTimerCountdown(preDefaultMinutes(DEFAULT_WORK_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_WORK_INTERVAL));
         setTitleText('Let`s Start Working!');
+        setEject(false);
         handleHamburgerClose();
     }
 
@@ -177,6 +170,9 @@ function Main({
         stopCountdown();
         setTimerActive(false);
         setTimerStarted(false);
+        setTimerStage(2);
+        setWorkProgress('');
+        clearProgressWidth();
         setStopTimer(null);
         setRelaxTimerMode(true);
         setStartTime(DEFAULT_RELAX_INTERVAL);
@@ -194,13 +190,12 @@ function Main({
                 </div>
                 <div className="main__buttons">
                     <button className={classNameForward} type="button" onClick={handleNextTimer}></button>
-                    <button className={classNameStartPause} type="button" onClick={handleStartTimer}></button>
+                    <button className={classNameStartPauseEject} type="button" onClick={handleStartTimer}></button>
                     <button className={classNameStopReset} type="button" onClick={handleResetTimer}></button>
                 </div>
                 <ProgressBar 
                     timerStage={timerStage}
                     workProgress={workProgress}
-                    relaxProgress={relaxProgress}
                 />
             </main>
             <Hamburger 

@@ -1,7 +1,7 @@
 .progressbar__time-lines {
     display: grid;
     list-style: none;
-    grid-template-columns: 25fr 5fr 25fr 5fr 25fr 5fr 25fr 5fr 25fr;
+    grid-template-columns: 25fr 10fr 25fr 10fr 25fr 10fr 25fr 10fr 25fr;
     margin: 30px 70px 0px 70px;
     gap: 0;
     padding: 0;
@@ -10,24 +10,38 @@
     width: calc(100% - 140px);
 }
 
-.progressbar__work-time-line {
+.progressbar__time-line {
     width: 100%;
     background-color: #ddd;
-    display: none;
     position: relative;
+    display: none;
 }
 
-.progressbar__work-time-line_active {
+.progressbar__time-line_active {
     display: block;
 }
 
-.progressbar__work-progress {
+.progressbar__time-line_done {
+    display: block;
+    background-color: #4CAF50;
+}
+
+.progressbar__time-line_pink {
+    background-color: #f49eda;
+}
+
+.progressbar__time-progress {
     width: 0%;
     height: 20px;
     background-color: #4CAF50;
 }
 
+.progressbar__time-progress_pink {
+    background-color: #f49eda;
+}
+
 .progressbar__text {
+    font-size: smaller;
     line-height: 20px;
     color: white;
     position: absolute;
@@ -39,15 +53,3 @@
     overflow: hidden;
 }
 
-.progressbar__relax-time-line {
-    background: #93f6c1;
-    display: none;
-}
-
-.progressbar__relax-time-line_active {
-    display: block;
-}
-
-.progressbar__relax-progress {
-
-}

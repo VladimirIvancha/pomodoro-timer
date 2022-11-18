@@ -83,6 +83,10 @@
     background-image: url(../../images/pause-svgrepo-com.svg);
 }
 
+.main__buttons-button_eject {
+    background-image: url(../../images/eject-svgrepo.svg);
+}
+
 .main__buttons-button_forward {
     background-image: url(../../images/forward-svgrepo-com.svg);
     display: none;
