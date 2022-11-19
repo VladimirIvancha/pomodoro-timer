@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Hamburger from "../Hamburger/Hamburger";
 import Settings from "../Settings/Settings";
 import ProgressBar from "../ProgressBar/ProgressBar";
+import useSound from 'use-sound';
+import timerSound from "../../audio/best-sms-tone meloboom.mp3"
 
 function Main({
     handleHamburgerClose,
@@ -25,10 +27,14 @@ function Main({
     const [stopTimer, setStopTimer] = useState(null);
     const [titleText, setTitleText] = useState('Let`s Start Working!')
     const [relaxTimerMode, setRelaxTimerMode] = useState(false);
-    const [timerStage, setTimerStage] = useState(0);
+    const [timerStage, setTimerStage] = useState(1);
     const [workProgress, setWorkProgress] = useState('');
+    const [zeroStage, setZeroStage] = useState(false);
     const [intervalId, setIntervalId] = useState(bar[0]);
     const [eject, setEject] = useState(false);
+
+    // Стейт для проигрывания звука
+    const [play] = useSound(timerSound);
     
     // Расчет вводных данных для таймеров
     const minutes = Math.floor(defaultStartTime / 60);
@@ -65,9 +71,17 @@ function Main({
         setStopTimer(null);
     }
 
-    // Функция очистки цветной шкалы прогресс-бара
+    // Функция очистки ВСЕХ цветных шкал прогресс-баров
+    function clearAllProgressWidth() {
+        bar.forEach(item => {
+            const elem = document.querySelector(item);
+            elem.style.width = '0%';
+        })    
+    }
+
+    // Функция очистки текущей шкалы прогресс-бара
     function clearProgressWidth() {
-        let elem = document.querySelector(intervalId);
+        const elem = document.querySelector(intervalId);
         elem.style.width = '0%';
     }
 
@@ -94,6 +108,7 @@ function Main({
             setStopTimer(setTimeout(() => startTimer(startTime), 1000))
         } else if (startTime < 0 && timerStage <= 9) {
             handleNextTimer();
+            return;
         } else {
             stopCountdown();
         }
@@ -106,10 +121,11 @@ function Main({
             return;
         }
         !isTimerActive ? setTimerActive(true) : setTimerActive(false);
-        setTimerStarted(true);
         timerStage <= 1 && setTimerStage(1);
         !isTimerActive ? startTimer(startTime) : stopCountdown();
         !isTimerActive ? !relaxTimerMode ? setTitleText('Working Hard...') : setTitleText('Relaxing...') : setTitleText('Pausing...');
+        setTimerStarted(true);
+        setZeroStage(true);
     }
 
     //Кнопка стоп (полный сброс)
@@ -118,7 +134,8 @@ function Main({
         setTimerActive(false);
         setTimerStarted(false);
         setWorkProgress('');
-        !relaxTimerMode && timerStage === 1 && setTimerStage(0);
+        clearProgressWidth();
+        !relaxTimerMode && timerStage === 1 && setTimerStage(1);
         setTimerCountdown(defaultMinutes+' : '+defaultSeconds);
         relaxTimerMode ? setStartTime(DEFAULT_RELAX_INTERVAL) : setStartTime(DEFAULT_WORK_INTERVAL);
         relaxTimerMode ? setTitleText('Let`s Relax a Littlebit!')  : setTitleText('Let`s Start Working!');
@@ -136,6 +153,7 @@ function Main({
             setTimerStage(timerStage + 1);
             setTimerCountdown(preDefaultMinutes(DEFAULT_WORK_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_WORK_INTERVAL));
             setStartTime(DEFAULT_WORK_INTERVAL);
+            play();
             return;
         }
         stopCountdown();
@@ -148,6 +166,7 @@ function Main({
         !relaxTimerMode ? setRelaxTimerMode(true) : setRelaxTimerMode(false);
         !relaxTimerMode ? setStartTime(DEFAULT_RELAX_INTERVAL) : setStartTime(DEFAULT_WORK_INTERVAL);
         !relaxTimerMode ? setTitleText('Let`s Relax a Littlebit!') : setTitleText('Let`s Start Working!');
+        play();
     }
 
     // Переход из гамбургер-меню на таймер работы 
@@ -155,7 +174,10 @@ function Main({
         stopCountdown();
         setTimerActive(false);
         setTimerStarted(false);
-        setTimerStage(0);
+        setTimerStage(1);
+        setIntervalId(bar[0]);
+        setWorkProgress('');
+        clearAllProgressWidth();
         setStopTimer(null);
         setRelaxTimerMode(false);
         setStartTime(DEFAULT_WORK_INTERVAL);
@@ -163,6 +185,7 @@ function Main({
         setTitleText('Let`s Start Working!');
         setEject(false);
         handleHamburgerClose();
+        setZeroStage(false);
     }
 
     // Переход из гамбургер-меню на таймер отдыха
@@ -171,14 +194,17 @@ function Main({
         setTimerActive(false);
         setTimerStarted(false);
         setTimerStage(2);
+        setIntervalId(bar[1]);
         setWorkProgress('');
-        clearProgressWidth();
+        clearAllProgressWidth();
         setStopTimer(null);
         setRelaxTimerMode(true);
         setStartTime(DEFAULT_RELAX_INTERVAL);
         setTimerCountdown(preDefaultMinutes(DEFAULT_RELAX_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_RELAX_INTERVAL));
         setTitleText('Let`s Relax a Littlebit!');
+        setEject(false);
         handleHamburgerClose();
+        setZeroStage(true);
     }
     
     return (
@@ -196,6 +222,7 @@ function Main({
                 <ProgressBar 
                     timerStage={timerStage}
                     workProgress={workProgress}
+                    zeroStage={zeroStage}
                 />
             </main>
             <Hamburger 
