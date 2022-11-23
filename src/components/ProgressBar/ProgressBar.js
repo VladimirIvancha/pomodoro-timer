@@ -4,6 +4,7 @@ function ProgressBar({
     timerStage,
     workProgress,
     zeroStage,
+    stopWatchTimerMode,
 }) {
     
     const firstTimeLine = `${zeroStage && 'progressbar__time-line'} ${timerStage === 1 && 'progressbar__time-line_active'} ${timerStage > 1 && 'progressbar__time-line_done'}`;
@@ -18,39 +19,39 @@ function ProgressBar({
 
     return (
         <ul className="progressbar__time-lines">
-            <li className={firstTimeLine}>
+            <li className={!stopWatchTimerMode ? firstTimeLine : undefined}>
                 <div id="interval-1" className="progressbar__time-progress"></div>
                 <p className="progressbar__text">{timerStage === 1 && workProgress}</p>
             </li>
-            <li className={secondTimeLine}>
+            <li className={!stopWatchTimerMode ? secondTimeLine : undefined}>
                 <div id="interval-2" className="progressbar__time-progress progressbar__time-progress_pink"></div>
                 <p className="progressbar__text">{timerStage === 2 && workProgress}</p>
             </li>
-            <li className={thirdTimeLine}>
+            <li className={!stopWatchTimerMode ? thirdTimeLine : undefined}>
                 <div id="interval-3" className="progressbar__time-progress"></div>
                 <p className="progressbar__text">{timerStage === 3 && workProgress}</p>
             </li>
-            <li className={fourthTimeLine}>
+            <li className={!stopWatchTimerMode ? fourthTimeLine : undefined}>
                 <div id="interval-4"className="progressbar__time-progress progressbar__time-progress_pink"></div>
                 <p className="progressbar__text">{timerStage === 4 && workProgress}</p>
             </li>
-            <li className={fifthTimeLine}>
+            <li className={!stopWatchTimerMode ? fifthTimeLine : undefined}>
                 <div id="interval-5" className="progressbar__time-progress"></div>
                 <p className="progressbar__text">{timerStage === 5 && workProgress}</p>
             </li>
-            <li className={sixthTimeLine}>
+            <li className={!stopWatchTimerMode ? sixthTimeLine : undefined}>
                 <div id="interval-6" className="progressbar__time-progress progressbar__time-progress_pink"></div>
                 <p className="progressbar__text">{timerStage === 6 && workProgress}</p>
             </li>
-            <li className={seventhTimeLine}>
+            <li className={!stopWatchTimerMode ? seventhTimeLine : undefined}>
                 <div id="interval-7" className="progressbar__time-progress"></div>
                 <p className="progressbar__text">{timerStage === 7 && workProgress}</p>
             </li>
-            <li className={eightthTimeLine}>
+            <li className={!stopWatchTimerMode ? eightthTimeLine : undefined}>
                 <div id="interval-8" className="progressbar__time-progress progressbar__time-progress_pink"></div>
                 <p className="progressbar__text">{timerStage === 8 && workProgress}</p>
             </li>
-            <li className={ninethTimeLine}>
+            <li className={!stopWatchTimerMode ? ninethTimeLine : undefined}>
                 <div id="interval-9" className="progressbar__time-progress"></div>
                 <p className="progressbar__text">{timerStage === 9 && workProgress}</p>
             </li>

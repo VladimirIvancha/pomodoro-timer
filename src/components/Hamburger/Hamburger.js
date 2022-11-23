@@ -5,6 +5,8 @@ function Hamburger({
     onClose,
     switchToWorkTimer,
     switchToRelaxTimer,
+    switchToStopWatch,
+    switchToStopWatchSettings,
 }) {
 
     const classNameHamburger = `hamburger ${isOpen && 'hamburger_is-opened'}`
@@ -22,10 +24,10 @@ function Hamburger({
                 </li>
                 <a className="hamburger__link hamburger__link_small" target="_blank" rel="noreferrer" href="https://en.wikipedia.org/wiki/Pomodoro_Technique">About Pomodoro Technique</a>
                 <li className="hamburger__link hamburger__link_red hamburger__link_notlink">StopWatch Timer</li>
-                <li className="hamburger__link" onClick={switchToWorkTimer}>
+                <li className="hamburger__link" onClick={switchToStopWatch}>
                     Start StopWatch
                 </li>
-                <li className="hamburger__link hamburger__link_small" onClick={switchToRelaxTimer}>
+                <li className="hamburger__link hamburger__link_small" onClick={switchToStopWatchSettings}>
                     Set Time for StopWatch
                 </li>
             </ul>

@@ -8,7 +8,7 @@ function Settings({
     handleSubmitSettings,
 }) {
 
-    const classNameHamburger = `settings ${isSettingsOpen && 'settings_is-opened'}`
+    const classNameSettings = `settings ${isSettingsOpen && 'settings_is-opened'}`
     const [disabled, setDisabled] = useState(false);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ function Settings({
     }
 
     return (
-        <section className={classNameHamburger}>
+        <section className={classNameSettings}>
             <div className="settings__wrapper">
                 <button className="settings__close-btn" type="button" onClick={handleSetingsClose}></button>
                 <h2 className="settings__link settings__link_red">Settings</h2>

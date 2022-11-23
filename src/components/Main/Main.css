@@ -35,6 +35,10 @@
     height: 400px;
 }
 
+.main__pomodoro-image_stopwatch {
+    background-image: url(../../images/stopwatch-timer-svgrepo-com.svg);
+}
+
 .main__timer {
     font-weight: 500;
     font-size: 80px;
@@ -43,6 +47,10 @@
     margin: 0;
     margin-top: 60px;
     text-align: center;
+}
+
+.main__timer_stopwatch {
+    margin-top: 0px;
 }
 
 .main__buttons {

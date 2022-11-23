@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer";
 function App() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [minSettings, setMinSettings] = useState("");
+  const [minSettings, setMinSettings] = useState(1);
   const [headerTitleText, setHeaderTitleText] = useState('Pomodoro Timer')
 
   function handleHamburgerOpen() {
@@ -23,13 +23,7 @@ function App() {
 
   function handleSetingsClose() {
     setIsSettingsOpen(false);
-    setMinSettings("");
   }
-
-  const handleSubmitSettings = (evt) => {
-    evt.preventDefault();
-      
-  };
 
   return (
     <div className="page">
@@ -45,7 +39,8 @@ function App() {
         isSettingsOpen={isSettingsOpen}
         minSettings={minSettings}
         setMinSettings={setMinSettings}
-        handleSubmitSettings={handleSubmitSettings}
+        setHeaderTitleText={setHeaderTitleText}
+        setIsSettingsOpen={setIsSettingsOpen}
       />
       <Footer />
     </div>

@@ -12,7 +12,8 @@ function Main({
     isSettingsOpen,
     minSettings,
     setMinSettings,
-    handleSubmitSettings,
+    setHeaderTitleText,
+    setIsSettingsOpen,
 }) {
     // Константы
     const DEFAULT_WORK_INTERVAL = 25*60;
@@ -27,6 +28,7 @@ function Main({
     const [stopTimer, setStopTimer] = useState(null);
     const [titleText, setTitleText] = useState('Let`s Start Working!')
     const [relaxTimerMode, setRelaxTimerMode] = useState(false);
+    const [stopWatchTimerMode, setStopWatchTimerMode] = useState(false);
     const [timerStage, setTimerStage] = useState(1);
     const [workProgress, setWorkProgress] = useState('');
     const [zeroStage, setZeroStage] = useState(false);
@@ -45,13 +47,13 @@ function Main({
     
     // Классы
     const classNameStartPauseEject = `main__buttons-button main__buttons-button_play ${isTimerActive && 'main__buttons-button_pause'} ${eject && 'main__buttons-button_eject'}`;
-    const classNameForward = `main__buttons-button main__buttons-button_forward ${isTimerStarted && 'main__buttons-button_active'}`;
+    const classNameForward = `main__buttons-button main__buttons-button_forward ${isTimerStarted && !stopWatchTimerMode && 'main__buttons-button_active'}`;
     const classNameStopReset = `main__buttons-button main__buttons-button_stop ${isTimerStarted && 'main__buttons-button_active'}`;
 
     // Реакция на состояние некоторых стейтов
     useEffect(() => {
-        relaxTimerMode ? setDefaultStartTime(DEFAULT_RELAX_INTERVAL) : setDefaultStartTime(DEFAULT_WORK_INTERVAL);
-    }, [relaxTimerMode, DEFAULT_RELAX_INTERVAL, DEFAULT_WORK_INTERVAL]);
+        relaxTimerMode ? setDefaultStartTime(DEFAULT_RELAX_INTERVAL) : stopWatchTimerMode ? setDefaultStartTime(minSettings*60) : setDefaultStartTime(DEFAULT_WORK_INTERVAL);
+    }, [relaxTimerMode, stopWatchTimerMode, minSettings, DEFAULT_RELAX_INTERVAL, DEFAULT_WORK_INTERVAL]);
 
     // Функция расчета исходных минут (при переключении на новый этап таймера)
     function preDefaultMinutes(data) {
@@ -85,7 +87,7 @@ function Main({
         elem.style.width = '0%';
     }
 
-    // Функция запуска таймера
+    // Функция запуска помодоро таймера в режиме work и relax
     function startTimer(startTime) {
         if (stopTimer || timerStage > 9) {
             return;
@@ -98,10 +100,12 @@ function Main({
         let seconds = time;
         if ( seconds < 10 ) seconds = '0'+seconds;
         setTimerCountdown(min+' : '+seconds);
-        let progressWidth = Math.round(100 * (1 - startTime/defaultStartTime));
-        let elem = document.querySelector(intervalId);
-        elem.style.width = progressWidth + '%'; 
-        setWorkProgress(progressWidth * 1  + '%');
+        if (!stopWatchTimerMode) {
+            let progressWidth = Math.round(100 * (1 - startTime/defaultStartTime));
+            let elem = document.querySelector(intervalId);
+            elem.style.width = progressWidth + '%';
+            setWorkProgress(progressWidth * 1  + '%');
+        }
         startTime--;
         setStartTime(startTime);
         if (startTime >= 0) { 
@@ -109,6 +113,8 @@ function Main({
         } else if (startTime < 0 && timerStage <= 9) {
             handleNextTimer();
             return;
+        } else if (startTime < 0 && timerStage === 0) {
+            handleResetTimer();
         } else {
             stopCountdown();
         }
@@ -121,9 +127,9 @@ function Main({
             return;
         }
         !isTimerActive ? setTimerActive(true) : setTimerActive(false);
-        timerStage <= 1 && setTimerStage(1);
+        timerStage <= 1 && !stopWatchTimerMode && setTimerStage(1);
         !isTimerActive ? startTimer(startTime) : stopCountdown();
-        !isTimerActive ? !relaxTimerMode ? setTitleText('Working Hard...') : setTitleText('Relaxing...') : setTitleText('Pausing...');
+        !isTimerActive ? !relaxTimerMode ? stopWatchTimerMode ? setTitleText('Counting Down...') : setTitleText('Working Hard...') : setTitleText('Relaxing...') : setTitleText('Pausing...');
         setTimerStarted(true);
         setZeroStage(true);
     }
@@ -137,11 +143,11 @@ function Main({
         clearProgressWidth();
         !relaxTimerMode && timerStage === 1 && setTimerStage(1);
         setTimerCountdown(defaultMinutes+' : '+defaultSeconds);
-        relaxTimerMode ? setStartTime(DEFAULT_RELAX_INTERVAL) : setStartTime(DEFAULT_WORK_INTERVAL);
-        relaxTimerMode ? setTitleText('Let`s Relax a Littlebit!')  : setTitleText('Let`s Start Working!');
+        relaxTimerMode ? setStartTime(DEFAULT_RELAX_INTERVAL) : stopWatchTimerMode ? setStartTime(minSettings*60) : setStartTime(DEFAULT_WORK_INTERVAL);
+        relaxTimerMode ? setTitleText('Let`s Relax a Littlebit!')  : stopWatchTimerMode ? setTitleText('Let`s Start Countdown!') : setTitleText('Let`s Start Working!');
     }
 
-    // Кнопка следующий этап таймера
+    // Кнопка следующий этап таймера/возвращение на новый виток
     function handleNextTimer() {
         if (timerStage >= 9) {
             setTitleText('Good job, Man! Wanna do it again?');
@@ -180,12 +186,14 @@ function Main({
         clearAllProgressWidth();
         setStopTimer(null);
         setRelaxTimerMode(false);
+        setStopWatchTimerMode(false);
         setStartTime(DEFAULT_WORK_INTERVAL);
         setTimerCountdown(preDefaultMinutes(DEFAULT_WORK_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_WORK_INTERVAL));
         setTitleText('Let`s Start Working!');
         setEject(false);
         handleHamburgerClose();
         setZeroStage(false);
+        setHeaderTitleText('Pomodoro Timer');
     }
 
     // Переход из гамбургер-меню на таймер отдыха
@@ -199,20 +207,51 @@ function Main({
         clearAllProgressWidth();
         setStopTimer(null);
         setRelaxTimerMode(true);
+        setStopWatchTimerMode(false);
         setStartTime(DEFAULT_RELAX_INTERVAL);
         setTimerCountdown(preDefaultMinutes(DEFAULT_RELAX_INTERVAL)+' : '+preDefaultSeconds(DEFAULT_RELAX_INTERVAL));
         setTitleText('Let`s Relax a Littlebit!');
         setEject(false);
         handleHamburgerClose();
         setZeroStage(true);
+        setHeaderTitleText('Pomodoro Timer');
     }
+
+    function switchToStopWatch() {
+        stopCountdown();
+        setTimerActive(false);
+        setTimerStarted(false);
+        setWorkProgress('');
+        setStopTimer(null);
+        clearAllProgressWidth();
+        setRelaxTimerMode(false);
+        setStopWatchTimerMode(true);
+        setStartTime(minSettings*60);
+        setTimerCountdown(preDefaultMinutes(minSettings*60)+' : '+preDefaultSeconds(minSettings*60));
+        setTitleText('Let`s Start Countdown!');
+        setEject(false);
+        handleHamburgerClose();
+        setZeroStage(false);
+        setHeaderTitleText('Simple StopWatch');
+    }
+
+    function switchToStopWatchSettings() {
+        handleHamburgerClose();
+        setIsSettingsOpen(true);
+    }
+
+    const handleSubmitSettings = (evt) => {
+        evt.preventDefault();
+        setIsSettingsOpen(false);
+        switchToStopWatch();
+    };
     
     return (
         <>
             <main className="main">
                 <h1 className="main__title">{titleText}</h1>
-                <div className="main__pomodoro-image">
-                    <p className="main__timer">{timerCountdown}</p>
+                <div className={`main__pomodoro-image ${stopWatchTimerMode && 'main__pomodoro-image_stopwatch'}`}>
+                    <p className={`main__timer ${stopWatchTimerMode && 'main__timer_stopwatch'}`}>{timerCountdown}</p>
                 </div>
                 <div className="main__buttons">
                     <button className={classNameForward} type="button" onClick={handleNextTimer}></button>
@@ -223,6 +262,7 @@ function Main({
                     timerStage={timerStage}
                     workProgress={workProgress}
                     zeroStage={zeroStage}
+                    stopWatchTimerMode={stopWatchTimerMode}
                 />
             </main>
             <Hamburger 
@@ -230,6 +270,8 @@ function Main({
                 onClose={handleHamburgerClose}
                 switchToWorkTimer={switchToWorkTimer}
                 switchToRelaxTimer={switchToRelaxTimer}
+                switchToStopWatch={switchToStopWatch}
+                switchToStopWatchSettings={switchToStopWatchSettings}
             />
             <Settings 
                 isSettingsOpen={isSettingsOpen}
