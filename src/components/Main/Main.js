@@ -4,6 +4,7 @@ import Settings from "../Settings/Settings";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import useSound from 'use-sound';
 import timerSound from "../../audio/best-sms-tone meloboom.mp3"
+import { BAR, DEFAULT_WORK_INTERVAL, DEFAULT_RELAX_INTERVAL } from "../../utils/constants";
 
 function Main({
     handleHamburgerClose,
@@ -14,12 +15,7 @@ function Main({
     setMinSettings,
     setHeaderTitleText,
     setIsSettingsOpen,
-}) {
-    // Константы
-    const DEFAULT_WORK_INTERVAL = 25*60;
-    const DEFAULT_RELAX_INTERVAL = 5*60;
-    const bar = ["#interval-1", "#interval-2", "#interval-3", "#interval-4", "#interval-5", "#interval-6", "#interval-7", "#interval-8", "#interval-9"];
-    
+}) {    
     // Изначальные стейты
     const [isTimerActive, setTimerActive] = useState(false);
     const [isTimerStarted, setTimerStarted] = useState(false);
@@ -32,7 +28,7 @@ function Main({
     const [timerStage, setTimerStage] = useState(1);
     const [workProgress, setWorkProgress] = useState('');
     const [zeroStage, setZeroStage] = useState(false);
-    const [intervalId, setIntervalId] = useState(bar[0]);
+    const [intervalId, setIntervalId] = useState(BAR[0]);
     const [eject, setEject] = useState(false);
 
     // Стейт для проигрывания звука
@@ -53,7 +49,7 @@ function Main({
     // Реакция на состояние некоторых стейтов
     useEffect(() => {
         relaxTimerMode ? setDefaultStartTime(DEFAULT_RELAX_INTERVAL) : stopWatchTimerMode ? setDefaultStartTime(minSettings*60) : setDefaultStartTime(DEFAULT_WORK_INTERVAL);
-    }, [relaxTimerMode, stopWatchTimerMode, minSettings, DEFAULT_RELAX_INTERVAL, DEFAULT_WORK_INTERVAL]);
+    }, [relaxTimerMode, stopWatchTimerMode, minSettings]);
 
     // Функция расчета исходных минут (при переключении на новый этап таймера)
     function preDefaultMinutes(data) {
@@ -75,7 +71,7 @@ function Main({
 
     // Функция очистки ВСЕХ цветных шкал прогресс-баров
     function clearAllProgressWidth() {
-        bar.forEach(item => {
+        BAR.forEach(item => {
             const elem = document.querySelector(item);
             elem.style.width = '0%';
         })    
@@ -163,7 +159,7 @@ function Main({
             return;
         }
         stopCountdown();
-        setIntervalId(bar[timerStage]);
+        setIntervalId(BAR[timerStage]);
         setTimerActive(false);
         setTimerStarted(false);
         setWorkProgress('');
@@ -181,7 +177,7 @@ function Main({
         setTimerActive(false);
         setTimerStarted(false);
         setTimerStage(1);
-        setIntervalId(bar[0]);
+        setIntervalId(BAR[0]);
         setWorkProgress('');
         clearAllProgressWidth();
         setStopTimer(null);
@@ -202,7 +198,7 @@ function Main({
         setTimerActive(false);
         setTimerStarted(false);
         setTimerStage(2);
-        setIntervalId(bar[1]);
+        setIntervalId(BAR[1]);
         setWorkProgress('');
         clearAllProgressWidth();
         setStopTimer(null);
@@ -217,6 +213,7 @@ function Main({
         setHeaderTitleText('Pomodoro Timer');
     }
 
+    // Переход из гамбургер-меню на таймер StopWatch
     function switchToStopWatch() {
         stopCountdown();
         setTimerActive(false);
@@ -235,11 +232,13 @@ function Main({
         setHeaderTitleText('Simple StopWatch');
     }
 
+    // Переход из гамбургер-меню в меню настроек
     function switchToStopWatchSettings() {
         handleHamburgerClose();
         setIsSettingsOpen(true);
     }
 
+    // Закрытие меню настройки и переход на таймер StopWatch после установки времени отсчета
     const handleSubmitSettings = (evt) => {
         evt.preventDefault();
         setIsSettingsOpen(false);

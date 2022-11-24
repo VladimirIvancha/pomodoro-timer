@@ -7,14 +7,18 @@ function Settings({
     setMinSettings,
     handleSubmitSettings,
 }) {
-
+    // Классы
     const classNameSettings = `settings ${isSettingsOpen && 'settings_is-opened'}`
+
+    // Изначальные стейты
     const [disabled, setDisabled] = useState(false);
 
+    // Реакция на состояние некоторых стейтов
     useEffect(() => {
         minSettings ? setDisabled(false) : setDisabled(true);
     }, [minSettings]);
 
+    // Функция установки значения формы в стейт StoWatch
     function handleChange(e) {
         setMinSettings(e.target.value);
     }

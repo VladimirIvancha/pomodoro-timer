@@ -6,7 +6,7 @@ function ProgressBar({
     zeroStage,
     stopWatchTimerMode,
 }) {
-    
+    // Классы
     const firstTimeLine = `${zeroStage && 'progressbar__time-line'} ${timerStage === 1 && 'progressbar__time-line_active'} ${timerStage > 1 && 'progressbar__time-line_done'}`;
     const secondTimeLine = `progressbar__time-line ${timerStage === 2 && 'progressbar__time-line_active'} ${timerStage > 2 && 'progressbar__time-line_done progressbar__time-line_pink'}`;
     const thirdTimeLine = `progressbar__time-line ${timerStage === 3 && 'progressbar__time-line_active'} ${timerStage > 3 && 'progressbar__time-line_done'}`;

@@ -8,7 +8,7 @@ function Hamburger({
     switchToStopWatch,
     switchToStopWatchSettings,
 }) {
-
+    // Классы
     const classNameHamburger = `hamburger ${isOpen && 'hamburger_is-opened'}`
 
     return (
