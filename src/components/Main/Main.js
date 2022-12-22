@@ -157,6 +157,10 @@ function Main({
             setStartTime(DEFAULT_WORK_INTERVAL);
             play();
             return;
+        } else if (stopWatchTimerMode) {
+            play();
+            switchToStopWatch();
+            return;
         }
         stopCountdown();
         setIntervalId(BAR[timerStage]);
