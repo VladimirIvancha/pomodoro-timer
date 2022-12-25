@@ -14,19 +14,20 @@ ____
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
+### Возможен запуск с рабочего сайта.
 ### Ссылка на рабочий сайт:
 https://vladimirivancha.github.io/pomodoro-timer/
 
 ### Ссылка на GitHub Pages:
 https://github.com/VladimirIvancha/Pomodoro-timer
 
-## Запуск проекта
+<!-- ## Запуск проекта
 Для запуска проекта:
 1. Клонировать репозиторий
 2. Перейти в основную папку
 3. Установить зависимости `npm install`
 4. Запустить проект `npm start`
-5. Проект запускается на http://localhost:3000/
+5. Проект запускается на http://localhost:3000/ -->
 ____
 
 ### Планы по доработке:
