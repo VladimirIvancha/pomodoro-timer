@@ -14,21 +14,25 @@ ____
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
+###Ссылка на рабочий сайт:
+https://vladimirivancha.github.io/pomodoro-timer/
+
+### Ссылка на GitHub Pages:
+https://github.com/VladimirIvancha/Pomodoro-timer
+
 ## Запуск проекта
 Для запуска проекта:
 1. Клонировать репозиторий
 2. Перейти в основную папку
-3. Запустить проект `npm start`
-4. Проект запускается на http://localhost:3000/
-
-### Ссылка на GitHub Pages:
-https://github.com/VladimirIvancha/Pomodoro-timer
+3. Установить зависимости `npm install`
+4. Запустить проект `npm start`
+5. Проект запускается на http://localhost:3000/
 ____
 
 ### Планы по доработке:
 - [x] реализовать на главной странице Pomodoro Timer общий блок со шкалами, заполняющимися по мере истечения времени;
 - [x] реализовать воспроизведение звукового сигнала в конце таймера;
 - [x] реализовать функционал для бонуса - StopWatch Timer;
+- [x] разместить приложение на внешнем сайте для общего доступа;
 - [ ] реализовать закрытие гамбургер-меню и меню настроек по внешнему полю и по нажатию клавиши Esc;
-- [ ] разместить приложение на внешнем сайте для общего доступа;
 - [ ] реализовать возможность выбора звукового сигнала.
