@@ -2,7 +2,7 @@
     display: grid;
     list-style: none;
     grid-template-columns: 25fr 10fr 25fr 10fr 25fr 10fr 25fr 10fr 25fr;
-    margin: 30px 70px 0px 70px;
+    margin: 10px 70px 0px 70px;
     gap: 0;
     padding: 0;
     max-width: 1140px;
